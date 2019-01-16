@@ -97,7 +97,7 @@ public class SearchAction extends ActionSupport implements SessionAware {
 	public String SearchMethod() {
 
 		if (id == null || kana == null || uname == null) {
-			return INPUT;// First time page loads. We show page associated to INPUT result.
+			return INPUT;// First time page loads. We show page associated to INPUT resulttes.
 
 		} else {
 
