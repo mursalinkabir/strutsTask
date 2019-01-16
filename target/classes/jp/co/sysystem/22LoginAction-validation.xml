@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC "-//Apache Struts//XWork Validator 1.0.3//EN" "http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+<validators>
+	<field name="id">
+		<field-validator type="requiredstring">
+			<param name="id">true</param>
+			<message key="prop.MSE001" />
+			<!-- <message>Id is Required</message> -->
+		</field-validator>
+	</field>
+	<field name="password">
+		<field-validator type="requiredstring">
+			<message>Password Is Required!</message>
+		</field-validator>
+	</field>
+
+</validators>

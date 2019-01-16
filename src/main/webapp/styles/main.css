@@ -1,0 +1,72 @@
+body {
+	background-color: #42f4e2;
+}
+
+h1 {
+	text-align: center;
+}
+
+.errorMessage {
+	color: red !important;
+}
+
+.errors {
+	background-color: #FFCCCC;
+	border: 1px solid #CC0000;
+	width: 400px;
+	margin-bottom: 8px;
+}
+
+.errors li {
+	list-style: none;
+}
+
+.welcome {
+	background-color: #DDFFDD;
+	border: 1px solid #009900;
+	width: 200px;
+}
+
+.welcome li {
+	list-style: none;
+}
+
+#loginFormDiv {
+	margin-top: -10px !important;
+}
+
+#SearchFormDiv {
+	width: 235px;
+	margin: 0 auto;
+}
+
+#SearchResultDiv {
+	width: 400px;
+	margin: 0 auto;
+}
+
+#SearchResultDiv td, th {
+	border: 1px solid #b5134f;
+	color: #7f3838;
+}
+
+#RegisterFormDiv, #UpdateFormDiv {
+	width: 350px;;
+	margin: 0 auto;
+}
+
+#conDiv {
+	width: 350px;;
+	margin: 0 auto;
+}
+
+#conTable tr {
+	background-color: white;
+}
+
+#conTable td, th {
+	border: 1px solid #ff0000;
+	color: #00cab5;
+	text-align: center;
+	text-shadow: 1px 1px #dcd9d9;
+}

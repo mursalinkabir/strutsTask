@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"> -->
+<!-- <xsl:output method="xml" indent="yes"/> -->
+<!DOCTYPE validators PUBLIC "-//Apache Struts//XWork Validator 1.0.3//EN" "http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+<validators>
+	<!-- <field name="userBean.id"> -->
+	<!-- <field-validator type="requiredstring"> -->
+	<!-- <param name="userBean.id">true</param> -->
+	<!-- <message>Id is Required</message> -->
+	<!-- </field-validator> -->
+	<!-- </field> -->
+
+	<!-- <validator type="requiredstring"> -->
+	<!-- <param name="fieldname">userBean.uname -->
+
+	<!-- </param> -->
+
+	<!-- <message>"$getText('err.MSE001')" </message> -->
+
+	<!-- </validator> -->
+
+
+
+
+	<field name="userBean.id">
+		<field-validator type="requiredstring">
+			<message>削除しますか？</message>
+		</field-validator>
+	</field>
+
+	<field name="userBean.pword">
+		<field-validator type="requiredstring">
+			<message>既に使用されているため、使用できません。</message>
+		</field-validator>
+	</field>
+
+</validators>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+
+	<constant name="struts.enable.DynamicMethodInvocation"
+		value="true" />
+	<constant name="struts.devMode" value="true" />
+
+	<!-- <constant name="struts.custom.i18n.resources" value="globalmessages" 
+		/> -->
+	<constant name="struts.custom.i18n.resources" value="struts" />
+
+	<constant name="struts.mapper.action.prefix.enabled"
+		value="true" />
+
+
+	<package name="default" extends="struts-default">
+		<interceptors>
+			<interceptor-stack name="appDefault">
+				<interceptor-ref name="timer" />
+				<interceptor-ref name="logger" />
+				<!-- <interceptor-ref name="json"> -->
+				<!-- <param name="enableSMD">true</param> -->
+				<!-- </interceptor-ref> -->
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*,^session\..*,^request\..*,^application\..*,^servlet(Request|Response)\..*,parameters\...*</param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack" />
+
+			</interceptor-stack>
+
+		</interceptors>
+
+		<default-action-ref name="login" />
+
+		<action name="index" class="jp.co.sysystem.IndexAction">
+			<result>/WEB-INF/jsp/index.jsp</result>
+		</action>
+
+		<action name="login" class="jp.co.sysystem.LoginAction"
+			method="insertOrUpdate">
+
+			<!-- <result name="populate">/WEB-INF/jsp/login.jsp</result> -->
+			<result name="input">/WEB-INF/jsp/login.jsp</result>
+			<result name="success">/WEB-INF/jsp/Search.jsp</result>
+			<result name="error">/WEB-INF/jsp/error.jsp</result>
+
+		</action>
+
+		<action name="Search" class="jp.co.sysystem.SearchAction"
+			method="SearchMethod">
+
+			<result name="input">/WEB-INF/jsp/Search.jsp</result>
+			<result name="success">/WEB-INF/jsp/Search.jsp</result>
+			<result name="error">/WEB-INF/jsp/error.jsp</result>
+
+
+		</action>
+		<action name="Register" class="jp.co.sysystem.RegisterAction"
+			method="RegisterUser">
+
+			<result name="input">/WEB-INF/jsp/register.jsp</result>
+			<result name="success">/WEB-INF/jsp/registerconfirm.jsp</result>
+			<result name="error">/WEB-INF/jsp/register.jsp</result>
+
+		</action>
+
+		<action name="RegisterConfirm"
+			class="jp.co.sysystem.RegisterAction" method="UserInsert">
+
+			<result name="input">/WEB-INF/jsp/register.jsp</result>
+			<result name="success">/WEB-INF/jsp/Search.jsp</result>
+			<result name="error">/WEB-INF/jsp/registerconfirm.jsp</result>
+
+		</action>
+
+		<action name="Update" class="jp.co.sysystem.UpdateAction"
+			method="execute">
+
+			<result name="input">/WEB-INF/jsp/update.jsp</result>
+			<result name="success">/WEB-INF/jsp/updateconfirm.jsp</result>
+			<result name="error">/WEB-INF/jsp/updateconfirm.jsp</result>
+
+		</action>
+		<action name="UpdateSubmit" class="jp.co.sysystem.UpdateAction"
+			method="UpdateUser">
+
+			<result name="input">/WEB-INF/jsp/update.jsp</result>
+			<result name="success">/WEB-INF/jsp/updateconfirm.jsp</result>
+			<result name="error">/WEB-INF/jsp/updateconfirm.jsp</result>
+
+		</action>
+		<action name="UpdateConfirm"
+			class="jp.co.sysystem.UpdateAction" method="UserDBUpdate">
+
+			<result name="input">/WEB-INF/jsp/updateconfirm.jsp</result>
+			<result name="success">/WEB-INF/jsp/Search.jsp</result>
+			<result name="error">/WEB-INF/jsp/registerconfirm.jsp</result>
+
+		</action>
+		<action name="Delete" class="jp.co.sysystem.DeleteAction"
+			method="execute">
+
+			<result name="input">/WEB-INF/jsp/deleteconfirm.jsp</result>
+			<result name="success">/WEB-INF/jsp/updateconfirm.jsp</result>
+			<result name="error">/WEB-INF/jsp/deleteconfirm.jsp</result>
+
+		</action>
+
+
+		<action name="DeleteConfirm"
+			class="jp.co.sysystem.DeleteAction" method="UserDBUpdate">
+
+			<result name="input">/WEB-INF/jsp/deleteconfirm.jsp</result>
+			<result name="success">/WEB-INF/jsp/Search.jsp</result>
+			<result name="error">/WEB-INF/jsp/deleteconfirm.jsp</result>
+
+		</action>
+
+
+	</package>
+	<package name="default2" extends="json-default" namespace="/">
+		<interceptors>
+			<interceptor-stack name="jsonDefaultStack">
+				<interceptor-ref name="json">
+					<param name="enableSMD">true</param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref
+			name="jsonDefaultStack" />
+		<action name="checkid" class="jp.co.sysystem.CheckId">
+			<!-- <result name="SUCCESS" type="json">/WEB-INF/jsp/register.jsp</result> -->
+			<result name="SUCCESS" type="json" />
+		</action>
+	</package>
+
+
+
+
+
+</struts>
