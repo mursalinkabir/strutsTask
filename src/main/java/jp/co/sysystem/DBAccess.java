@@ -413,22 +413,28 @@ public class DBAccess {
 
 	}
 
-	public String[][] selectExec(String sql, String id, String uname, String kana) {
+	public String[][] selectExec(String sql, String ID, String uname, String kana) {
 
 		try {
 			PreparedStatement prpstmt = null;
 			prpstmt = conn.prepareStatement(sql);
-			if (id != "" && uname != "" && kana != "") {
-				prpstmt.setString(1, id);
-				prpstmt.setString(2, uname);
-				prpstmt.setString(3, kana);
+			if (ID != "" || uname != "" || kana != "") {
+				//fixing search problem and making it search for input item only.
+				ID = (ID.length() == 0) ? " ":ID;
+				uname = (uname.length() == 0) ? " ":uname;
+				kana = (kana.length() == 0) ? " ":kana;
+				
+				prpstmt.setString(1, "%"+ID+"%");
+				prpstmt.setString(2, "%"+uname+"%");
+				prpstmt.setString(3, "%"+kana+"%");
 			} else {
+				System.out.println(prpstmt);
 				// is search term is null
 				prpstmt.close();
 				String[][] rows = new String[0][0];
 				return rows;
 			}
-
+			System.out.println(prpstmt);
 			ResultSet rset = prpstmt.executeQuery();
 			if (rset.first()) {
 				// result not empty

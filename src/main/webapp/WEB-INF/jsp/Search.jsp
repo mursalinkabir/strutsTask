@@ -35,7 +35,7 @@
 		<s:form action="Search" method="GET" namespace="/">
 			<table>
 				<tr>
-					<s:textfield label="ID" name="id" />
+					<s:textfield label="ID" name="ID"  />
 				</tr>
 				<tr>
 					<s:textfield label="名前" name="uname" />

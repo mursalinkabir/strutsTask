@@ -9,7 +9,6 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
 /**
  * SearchAction.java class This class will perform search
@@ -20,36 +19,37 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 public class SearchAction extends ActionSupport implements SessionAware {
 	private static final long serialVersionUID = 1L;
 	DBAccess db = new DBAccess();
-	private String id;
+	private String ID;
 	private String uname;
 	private String kana;
 
 	// For SessionAware
 	private java.util.Map<String, Object> userSession;
+
 	@Override
-	public void setSession( java.util.Map<String, Object> session ) {
+	public void setSession(java.util.Map<String, Object> session) {
 		userSession = session;
 	}
 
 	/**
-	 * @return the id
+	 * @return the ID
 	 */
-	@RequiredStringValidator(message = MessagesConfig.MSE015)
-	public final String getId() {
-		return id;
+//	@RequiredStringValidator(message = MessagesConfig.MSE015)
+	public final String getID() {
+		return ID;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public final void setId(String id) {
-		this.id = id;
+	public final void setID(String ID) {
+		this.ID = ID;
 	}
 
 	/**
 	 * @return the uname
 	 */
-	@RequiredStringValidator(message = MessagesConfig.MSE015)
+//	@RequiredStringValidator(message = MessagesConfig.MSE015)
 	public final String getUname() {
 		return uname;
 	}
@@ -64,7 +64,7 @@ public class SearchAction extends ActionSupport implements SessionAware {
 	/**
 	 * @return the kana
 	 */
-	@RequiredStringValidator(message = MessagesConfig.MSE015)
+//	@RequiredStringValidator(message = MessagesConfig.MSE015)
 	public final String getKana() {
 		return kana;
 	}
@@ -96,28 +96,45 @@ public class SearchAction extends ActionSupport implements SessionAware {
 	 */
 	public String SearchMethod() {
 
-		if (id == null || kana == null || uname == null) {
+		if (ID == null || kana == null || uname == null) {
 			return INPUT;// First time page loads. We show page associated to INPUT resulttes.
 
 		} else {
 
 			db.connect();
-			boolean isIdAlpha = isAlphaNumeric(id);
+
 			boolean isNameFull = isHalfWidth(uname);
 			boolean isKanaHalf = isHalfWidth(kana);
-			if (!isIdAlpha) {
-				addActionError(MessagesConfig.MSE002);
-				return INPUT;
-			} else if (isNameFull) {
-				addActionError(MessagesConfig.MSE010);
-				return INPUT;
-			} else if (!isKanaHalf) {
-				addActionError(MessagesConfig.MSE013);
-				return INPUT;
+			if (ID != null && ID.length()>0) {
+				boolean isIdAlpha = isAlphaNumeric(ID);
+				if (!isIdAlpha  ) {
+					addActionError(MessagesConfig.MSE002);
+					return INPUT;
+				}
 			} else {
+				ID = "";
+			}
 
-				String SearchSql = "SELECT user.ID,NAME,KANA,BIRTH,CLUB FROM userinfo.user  INNER JOIN userinfo.userdetail ON user.ID= userdetail.ID WHERE user.ID=? AND NAME=? AND KANA=?";
-				String[][] SearchRes = db.selectExec(SearchSql, id, uname, kana);
+			if (uname != null && uname.length()>0) {
+				if (isNameFull) {
+					addActionError(MessagesConfig.MSE010);
+					return INPUT;
+				}
+			} else {
+				uname = "";
+			}
+			if (kana != null && kana.length()>0) {
+				if (!isKanaHalf) {
+					addActionError(MessagesConfig.MSE013);
+					return INPUT;
+				}
+			} else {
+				kana = "";
+			}
+
+			if (!uname.isEmpty() || !ID.isEmpty() || !kana.isEmpty()) {
+				String SearchSql = "SELECT user.ID,NAME,KANA,BIRTH,CLUB FROM userinfo.user  INNER JOIN userinfo.userdetail ON user.ID= userdetail.ID WHERE user.ID LIKE ? OR NAME LIKE ? OR KANA LIKE ?";
+				String[][] SearchRes = db.selectExec(SearchSql, ID, uname, kana);
 				// passing multidimensional array to jsp
 				if (SearchRes.length > 0) {
 					String retrievearrRow = Integer.toString(SearchRes.length);
@@ -126,22 +143,26 @@ public class SearchAction extends ActionSupport implements SessionAware {
 					userSession.put("arrayCol", retrievearrColumn);
 					// sending alist to output
 					userSession.put("datalist", SearchRes);
-					
+
 				} else {
 					System.out.println("結果が見つかりません。/No rows fetched");
 					userSession.put("msg", MessagesConfig.MSE022);
 
-					//response.sendRedirect("B30_SELECT.jsp");
+					// response.sendRedirect("B30_SELECT.jsp");
 				}
 				return SUCCESS; // all well
+			}else {
+				addActionError(MessagesConfig.MSE015);
+				return INPUT;
 			}
-
+			
 		}
+
 	}
 
 	@Override
 	public void validate() { //
-		if (id == null || kana == null || uname == null) { // First time page loads, student is null.
+		if (ID == null || kana == null || uname == null) { // First time page loads, student is null.
 			setFieldErrors(null); // We clear all the validation errors that strut stupidly found since there was
 									// not form submission.
 		}
