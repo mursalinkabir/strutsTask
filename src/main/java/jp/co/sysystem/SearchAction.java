@@ -95,12 +95,16 @@ public class SearchAction extends ActionSupport implements SessionAware {
 	 * @exception RuntimeException,IOException on Input.
 	 */
 	public String SearchMethod() {
-
+		boolean errchq =false;
 		if (ID == null || kana == null || uname == null) {
+			//when page loads grid must not be shown so err is true
+			errchq =true;
+			userSession.put("Errorchq", errchq);
 			return INPUT;// First time page loads. We show page associated to INPUT resulttes.
 
 		} else {
-
+			//after page load the errchq should be initially false
+			errchq =false;
 			db.connect();
 
 			boolean isNameFull = isHalfWidth(uname);
@@ -109,7 +113,7 @@ public class SearchAction extends ActionSupport implements SessionAware {
 				boolean isIdAlpha = isAlphaNumeric(ID);
 				if (!isIdAlpha  ) {
 					addActionError(MessagesConfig.MSE002);
-					return INPUT;
+					errchq= true;
 				}
 			} else {
 				ID = "";
@@ -118,7 +122,7 @@ public class SearchAction extends ActionSupport implements SessionAware {
 			if (uname != null && uname.length()>0) {
 				if (isNameFull) {
 					addActionError(MessagesConfig.MSE010);
-					return INPUT;
+					errchq= true;
 				}
 			} else {
 				uname = "";
@@ -126,12 +130,18 @@ public class SearchAction extends ActionSupport implements SessionAware {
 			if (kana != null && kana.length()>0) {
 				if (!isKanaHalf) {
 					addActionError(MessagesConfig.MSE013);
-					return INPUT;
+					errchq= true;
 				}
 			} else {
 				kana = "";
 			}
-
+			if (errchq) {
+				//when there is error error check is true and put in session
+				userSession.put("Errorchq", errchq);
+				return INPUT;
+			}
+			//if no error found change the error check to false again and put in the session
+			userSession.put("Errorchq", errchq);
 			if (!uname.isEmpty() || !ID.isEmpty() || !kana.isEmpty()) {
 				String SearchSql = "SELECT user.ID,NAME,KANA,BIRTH,CLUB FROM userinfo.user  INNER JOIN userinfo.userdetail ON user.ID= userdetail.ID WHERE user.ID LIKE ? OR NAME LIKE ? OR KANA LIKE ?";
 				String[][] SearchRes = db.selectExec(SearchSql, ID, uname, kana);

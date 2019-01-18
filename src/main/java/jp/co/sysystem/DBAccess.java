@@ -425,8 +425,8 @@ public class DBAccess {
 				kana = (kana.length() == 0) ? " ":kana;
 				
 				prpstmt.setString(1, "%"+ID+"%");
-				prpstmt.setString(2, "%"+uname+"%");
-				prpstmt.setString(3, "%"+kana+"%");
+				prpstmt.setString(2, ""+uname+"%");
+				prpstmt.setString(3, ""+kana+"%");
 			} else {
 				System.out.println(prpstmt);
 				// is search term is null

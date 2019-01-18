@@ -50,7 +50,7 @@
 
 			</table>
 			<span class="w3-container" style="display: inline;"> <input
-				type="submit" value="登録" id="Search_0" style="float: left;">
+				type="submit" value="検索" id="Search_0" style="float: left;">
 
 
 			</span>
@@ -71,13 +71,18 @@
 	</div>
 
 
-	<!-- Getting Search Result from Session -->
+	<!-- Checking if error exists -->
+	<%  
+	boolean errchq = (boolean) session.getAttribute("Errorchq");
+	if(!errchq){
+	%>
+		<!-- Showing search results -->
 	<div id="SearchResultDiv">
 		<table id="conTable">
 			<tr>
 
 
-				<%
+				<% 
 					// retrieve your list from the request, with casting 
 					String flag = (String) session.getAttribute("arrayRow");
 					if (flag != null) {
@@ -138,7 +143,7 @@
 
 	</div>
 
-
+<% } %>
 
 
 </body>
