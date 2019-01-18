@@ -147,7 +147,7 @@ public class UpdateAction extends ActionSupport implements SessionAware {
 	}
 
 	public String UpdateUser() throws Exception {
-
+		boolean errchq = false;
 		if (userBean.getId() == null || userBean.getKana() == null || userBean.getUname() == null) {
 
 			return INPUT;// First time page loads. We show page associated to INPUT result.
@@ -156,50 +156,110 @@ public class UpdateAction extends ActionSupport implements SessionAware {
 
 			// adding field error
 			if (userBean.getId().isEmpty()) {
-				addFieldError("userBean.id", "ID is needed");
+				//addFieldError("userBean.id", "ID is needed");
+				addActionError(MessagesConfig.MSE001);
+				errchq = true;
 			}
 			if (userBean.getUname().isEmpty()) {
-				addFieldError("userBean.uname", MessagesConfig.MSE009);
+				//addFieldError("userBean.uname", MessagesConfig.MSE009);
+				addActionError(MessagesConfig.MSE009);
+				errchq = true;
 			}
 			if (userBean.getKana().isEmpty()) {
-				addFieldError("userBean.kana", MessagesConfig.MSE012);
+				//addFieldError("userBean.kana", MessagesConfig.MSE012);
+				addActionError(MessagesConfig.MSE012);
+				errchq = true;
 			}
 			if (userBean.getBirth().isEmpty()) {
-				addFieldError("userBean.birth", MessagesConfig.MSE016);
+				//addFieldError("userBean.birth", MessagesConfig.MSE016);
+				addActionError(MessagesConfig.MSE016);
+				errchq = true;
 			}
 			if (userBean.getClub().isEmpty()) {
-				addFieldError("userBean.club", MessagesConfig.MSE015);
+				//addFieldError("userBean.club", MessagesConfig.MSE015);
+				addActionError(MessagesConfig.MSE015);
+				errchq = true;
 			}
 
-			boolean isIdAlpha = isAlphaNumeric(userBean.getId());
-			boolean isNameFull = isHalfWidth(userBean.getUname());
-			boolean isKanaHalf = isHalfWidth(userBean.getKana());
-			boolean isBirthformatok = isThisDateValid(userBean.getBirth(), "yyyy/MM/dd");
+//			boolean isIdAlpha = isAlphaNumeric(userBean.getId());
+//			boolean isNameFull = isHalfWidth(userBean.getUname());
+//			boolean isKanaHalf = isHalfWidth(userBean.getKana());
+//			boolean isBirthformatok = isThisDateValid(userBean.getBirth(), "yyyy/MM/dd");
 
-			if (!isIdAlpha) {
-				addActionError(MessagesConfig.MSE002);
-				return INPUT;
-			} else if (isNameFull) {
-				addActionError(MessagesConfig.MSE010);
-				return INPUT;
-			} else if (!isKanaHalf) {
-				addActionError(MessagesConfig.MSE013);
-				return INPUT;
-			} else if (!isBirthformatok) {
-				addActionError(MessagesConfig.MSE018);
-				return INPUT;
-			} else if (isFullWidth(userBean.getBirth())) {
-				addActionError(MessagesConfig.MSE017);
-				return INPUT;
-			} else if (isHalfWidth(userBean.getClub())) {
-				addActionError(MessagesConfig.MSE019);
-				return INPUT;
-			} else {
+//			if (!isIdAlpha) {
+//				addActionError(MessagesConfig.MSE002);
+//				return INPUT;
+//			} else if (isNameFull) {
+//				addActionError(MessagesConfig.MSE010);
+//				return INPUT;
+//			} else if (!isKanaHalf) {
+//				addActionError(MessagesConfig.MSE013);
+//				return INPUT;
+//			} else if (!isBirthformatok) {
+//				addActionError(MessagesConfig.MSE018);
+//				return INPUT;
+//			} else if (isFullWidth(userBean.getBirth())) {
+//				addActionError(MessagesConfig.MSE017);
+//				return INPUT;
+//			} else if (isHalfWidth(userBean.getClub())) {
+//				addActionError(MessagesConfig.MSE019);
+//				return INPUT;
+//			} else {
+//				userSession.put("userData", userBean);
+//				return SUCCESS; // all well
+//
+//			}
+
+			
+			if (userBean.getId().length() > 0) {
+				boolean isIdAlpha = isAlphaNumeric(userBean.getId());
+				if (!isIdAlpha) {
+					addActionError(MessagesConfig.MSE002);
+					errchq = true;
+				} 
+			}
+
+			if (userBean.getBirth().length() > 0) {
+				boolean isBirthformatok = isThisDateValid(userBean.getBirth(), "yyyy/MM/dd");
+				if (!isBirthformatok) {
+					addActionError(MessagesConfig.MSE018);
+					errchq = true;
+				}
+				if (isFullWidth(userBean.getBirth())) {
+					addActionError(MessagesConfig.MSE017);
+					errchq = true;
+				}
+			}
+		
+			if (userBean.getUname().length() > 0) {
+				boolean isNameFull = isHalfWidth(userBean.getUname());
+				if (isNameFull) {
+					addActionError(MessagesConfig.MSE010);
+					errchq = true;
+				}
+			}
+			if (userBean.getKana().length() > 0) {
+				boolean isKanaHalf = isHalfWidth(userBean.getKana());
+				if (!isKanaHalf) {
+					addActionError(MessagesConfig.MSE013);
+					errchq = true;
+				}
+			}
+
+			if (userBean.getKana().length() > 0) {
+				if (isHalfWidth(userBean.getClub())) {
+					addActionError(MessagesConfig.MSE019);
+					errchq = true;
+				}
+			}
+			if (!errchq) {
 				userSession.put("userData", userBean);
 				return SUCCESS; // all well
-
+			} else {
+				return INPUT;// error is there
 			}
-
+			
+			
 		}
 
 	}

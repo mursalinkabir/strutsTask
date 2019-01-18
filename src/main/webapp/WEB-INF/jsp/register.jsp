@@ -110,21 +110,9 @@
 			</span>
 
 		</s:form>
-		<!-- 		<!-- New Input Button -->
-		-->
-		<%-- 		<a href="<s:url action="Register"/>"> --%>
-		<!-- 			<button class="button -blue -bordered" style="margin-left: 5px;"> -->
-		<%-- 				<span class="button--inner">新規</span> --%>
-		<!-- 			</button> -->
-		<!-- 		</a> -->
+	
 		<button type="button" name="back" onclick="history.back()">戻る</button>
-		<!-- Logout Button -->
-		<%-- 		<a href="<s:url action="login"/>"> --%>
-		<!-- 			<button class="button -blue -bordered" style="margin-left: 5px;"> -->
-		<%-- 				<span class="button--inner">ログアウト</span> --%>
-		<!-- 			</button> -->
-		<!-- 		</a> -->
-
+	
 	</div>
 
 

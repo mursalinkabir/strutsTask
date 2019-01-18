@@ -46,10 +46,12 @@ public class RegisterAction extends ActionSupport implements SessionAware {
 									// not form submission.
 		}
 	}
+
 	/**
 	 * 
-	 * This is the isThisDateValid method.
-	 * This method will check if a date is valid.
+	 * This is the isThisDateValid method. This method will check if a date is
+	 * valid.
+	 * 
 	 * @param dateToValidate
 	 * @param dateFromat
 	 * @return boolean
@@ -87,7 +89,7 @@ public class RegisterAction extends ActionSupport implements SessionAware {
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 			int esw = UCharacter.getIntPropertyValue(c, UProperty.EAST_ASIAN_WIDTH);
-			if (esw!=3) {
+			if (esw != 3) {
 				return false;
 			}
 		}
@@ -99,13 +101,12 @@ public class RegisterAction extends ActionSupport implements SessionAware {
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 			int esw = UCharacter.getIntPropertyValue(c, UProperty.EAST_ASIAN_WIDTH);
-			if (esw!=2) {
+			if (esw != 2) {
 				return false;
 			}
 		}
 		return true;
 
-		
 	}
 
 	@Override
@@ -114,6 +115,7 @@ public class RegisterAction extends ActionSupport implements SessionAware {
 	}
 
 	public String RegisterUser() throws Exception {
+		boolean errchq = false;
 
 		if (userBean.getId() == null || userBean.getKana() == null || userBean.getUname() == null) {
 
@@ -123,83 +125,105 @@ public class RegisterAction extends ActionSupport implements SessionAware {
 
 			// adding field error
 			if (userBean.getId().isEmpty()) {
-				addFieldError("userBean.id", "ID is needed");
+				// addFieldError("userBean.id", MessagesConfig.MSE001);
+				addActionError(MessagesConfig.MSE001);
+				errchq = true;
 			}
 			if (userBean.getPword().isEmpty()) {
-				addFieldError("userBean.pword", MessagesConfig.MSE005);
+				// addFieldError("userBean.pword", MessagesConfig.MSE005);
+				addActionError(MessagesConfig.MSE005);
+				errchq = true;
 			}
 			if (userBean.getConpword().isEmpty()) {
-				addFieldError("userBean.conpword", MessagesConfig.MSE005);
+				// addFieldError("userBean.conpword", MessagesConfig.MSE005);
+				addActionError(MessagesConfig.MSE005);
+				errchq = true;
 			}
 			if (userBean.getUname().isEmpty()) {
-				addFieldError("userBean.uname", MessagesConfig.MSE009);
+				// addFieldError("userBean.uname", MessagesConfig.MSE009);
+				addActionError(MessagesConfig.MSE009);
+				errchq = true;
 			}
 			if (userBean.getKana().isEmpty()) {
-				addFieldError("userBean.kana", MessagesConfig.MSE012);
+				// addFieldError("userBean.kana", MessagesConfig.MSE012);
+				addActionError(MessagesConfig.MSE012);
+				errchq = true;
 			}
 			if (userBean.getBirth().isEmpty()) {
-				addFieldError("userBean.birth", MessagesConfig.MSE016);
+				// addFieldError("userBean.birth", MessagesConfig.MSE016);
+				addActionError(MessagesConfig.MSE016);
+				errchq = true;
 			}
 			if (userBean.getClub().isEmpty()) {
-				addFieldError("userBean.club", MessagesConfig.MSE015);
+				// addFieldError("userBean.club", MessagesConfig.MSE015);
+				addActionError(MessagesConfig.MSE015);
+				errchq = true;
 			}
 			db.connect();
-			boolean isIdAlpha = isAlphaNumeric(userBean.getId());
-			boolean isPwAlpha = isAlphaNumeric(userBean.getPword());
-			boolean isNameFull = isHalfWidth(userBean.getUname());
-			boolean isKanaHalf = isHalfWidth(userBean.getKana());
-			boolean isBirthformatok = isThisDateValid(userBean.getBirth(), "yyyy/MM/dd");
 
-//			try {
-//				SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy/MM/dd");
-//				java.util.Date date = formatter1.parse(userBean.getBirth());
-//				java.sql.Date sqlStartDate = new java.sql.Date(date.getTime());
-//
-//
-//
-//			} catch (Exception e) {
-//
-//				isBirthokay = false;
-//			}
-
-			if (!isIdAlpha) {
-				addActionError(MessagesConfig.MSE002);
-				return INPUT;
-			} else if (db.isExist(userBean.getId())) {
-				addActionError(MessagesConfig.MSE003);
-				return INPUT;
-			} else if (!isBirthformatok) {
-				addActionError(MessagesConfig.MSE018);
-				return INPUT;
-			} else if (!isPwAlpha) {
-				addActionError(MessagesConfig.MSE006);
-				return INPUT;
-			} else if (!isAlphaNumeric(userBean.getConpword())) {
-				addActionError(MessagesConfig.MSE008);
-				return INPUT;
-			} else if (!userBean.getPword().equals(userBean.getConpword())) {
-				addActionError(MessagesConfig.MSE025);
-				return INPUT;
-			} else if (isNameFull) {
-				addActionError(MessagesConfig.MSE010);
-				return INPUT;
-			} else if (!isKanaHalf) {
-				addActionError(MessagesConfig.MSE013);
-				return INPUT;
+			if (userBean.getId().length() > 0) {
+				boolean isIdAlpha = isAlphaNumeric(userBean.getId());
+				if (!isIdAlpha) {
+					addActionError(MessagesConfig.MSE002);
+					errchq = true;
+				} else if (db.isExist(userBean.getId())) {
+					addActionError(MessagesConfig.MSE003);
+					errchq = true;
+				}
 			}
-//			else if (!isAlphaNumeric(userBean.getBirth().toString())) {
-//				addActionError(MessagesConfig.MSE017);
-//				return INPUT;
-//			} 
-			else if (isFullWidth(userBean.getBirth())) {
-				addActionError(MessagesConfig.MSE017);
-				return INPUT;
-			} else if (isHalfWidth(userBean.getClub())) {
-				addActionError(MessagesConfig.MSE019);
-				return INPUT;
-			} else {
+
+			if (userBean.getBirth().length() > 0) {
+				boolean isBirthformatok = isThisDateValid(userBean.getBirth(), "yyyy/MM/dd");
+				if (!isBirthformatok) {
+					addActionError(MessagesConfig.MSE018);
+					errchq = true;
+				}
+				if (isFullWidth(userBean.getBirth())) {
+					addActionError(MessagesConfig.MSE017);
+					errchq = true;
+				}
+			}
+			if (userBean.getPword().length() > 0 && userBean.getConpword().length() > 0) {
+				boolean isPwAlpha = isAlphaNumeric(userBean.getPword());
+				if (!isPwAlpha) {
+					addActionError(MessagesConfig.MSE006);
+					errchq = true;
+				}
+				if (!isAlphaNumeric(userBean.getConpword())) {
+					addActionError(MessagesConfig.MSE008);
+					errchq = true;
+				}
+				if (!userBean.getPword().equals(userBean.getConpword())) {
+					addActionError(MessagesConfig.MSE025);
+					errchq = true;
+				}
+			}
+			if (userBean.getUname().length() > 0) {
+				boolean isNameFull = isHalfWidth(userBean.getUname());
+				if (isNameFull) {
+					addActionError(MessagesConfig.MSE010);
+					errchq = true;
+				}
+			}
+			if (userBean.getKana().length() > 0) {
+				boolean isKanaHalf = isHalfWidth(userBean.getKana());
+				if (!isKanaHalf) {
+					addActionError(MessagesConfig.MSE013);
+					errchq = true;
+				}
+			}
+
+			if (userBean.getKana().length() > 0) {
+				if (isHalfWidth(userBean.getClub())) {
+					addActionError(MessagesConfig.MSE019);
+					errchq = true;
+				}
+			}
+			if (!errchq) {
 				userSession.put("userData", userBean);
 				return SUCCESS; // all well
+			} else {
+				return INPUT;// error is there
 			}
 
 		}

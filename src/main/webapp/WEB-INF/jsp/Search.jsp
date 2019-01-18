@@ -73,7 +73,8 @@
 
 	<!-- Checking if error exists -->
 	<%  
-	boolean errchq = (boolean) session.getAttribute("Errorchq");
+	boolean errchq= true;
+	errchq = (boolean) session.getAttribute("Errorchq");
 	if(!errchq){
 	%>
 		<!-- Showing search results -->
