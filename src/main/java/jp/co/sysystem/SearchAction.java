@@ -153,8 +153,12 @@ public class SearchAction extends ActionSupport implements SessionAware {
 					userSession.put("arrayCol", retrievearrColumn);
 					// sending alist to output
 					userSession.put("datalist", SearchRes);
+					errchq =false;
+					userSession.put("Errorchq", errchq);
 
 				} else {
+					errchq =true;
+					userSession.put("Errorchq", errchq);
 					System.out.println("結果が見つかりません。/No rows fetched");
 					userSession.put("msg", MessagesConfig.MSE022);
 

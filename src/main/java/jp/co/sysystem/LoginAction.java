@@ -6,7 +6,7 @@ package jp.co.sysystem;
 import java.io.IOException;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
-
+import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 /**
@@ -16,7 +16,7 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
  * @author SYSYSTEM/Mursalin
  * @update Nov 27, 2018
  */
-public class LoginAction extends ActionSupport {
+public class LoginAction extends ActionSupport implements SessionAware {
 
 	private static final long serialVersionUID = 1L;
 	private String id;
@@ -27,7 +27,13 @@ public class LoginAction extends ActionSupport {
 	public String getToken() { return token; }
 	DBAccess db = new DBAccess();
 	// connecting to db
+	// For SessionAware
+	private java.util.Map<String, Object> userSession;
 
+	@Override
+	public void setSession(java.util.Map<String, Object> session) {
+			userSession = session;
+		}
 	/**
 	 * 
 	 * This is the getId method.
@@ -73,33 +79,34 @@ public class LoginAction extends ActionSupport {
 	 */
 	@SkipValidation
 	
-	public String execute() throws Exception {
-		db.connect();
-
-		if (password == null || id == null) {
-			return INPUT;
-		} // First time page loads. We show page associated to INPUT result.
-		else {
-			// checking if id and password exists in db ,if not show separate errors.
-			String sql1 = "SELECT * FROM userinfo.user WHERE ID='" + id + "'";
-			String sql2 = "SELECT * FROM userinfo.user WHERE PASS='" + password + "'";
-			int IdCount = db.undateExec(sql1);
-			int PassCount = db.undateExec(sql2);
-			//checking row count
-			if (IdCount < 1) {
-				addActionError(MessagesConfig.MSE004);
-				return INPUT;
-			} else if (PassCount < 1) {
-				addActionError(MessagesConfig.MSE007);
-				return INPUT;
-			} else {
-
-				return SUCCESS; // all well
-			}
-
-		}
-
-	}
+//	public String execute() throws Exception {
+//			
+//		db.connect();
+//
+//		if (password == null || id == null) {
+//			return INPUT;
+//		} // First time page loads. We show page associated to INPUT result.
+//		else {
+//			// checking if id and password exists in db ,if not show separate errors.
+//			String sql1 = "SELECT * FROM userinfo.user WHERE ID='" + id + "'";
+//			String sql2 = "SELECT * FROM userinfo.user WHERE PASS='" + password + "'";
+//			int IdCount = db.undateExec(sql1);
+//			int PassCount = db.undateExec(sql2);
+//			//checking row count
+//			if (IdCount < 1) {
+//				addActionError(MessagesConfig.MSE004);
+//				return INPUT;
+//			} else if (PassCount < 1) {
+//				addActionError(MessagesConfig.MSE007);
+//				return INPUT;
+//			} else {
+//				
+//				return SUCCESS; // all well
+//			}
+//
+//		}
+//
+//	}
 
 	public String insertOrUpdate() {
 		
@@ -140,7 +147,9 @@ public class LoginAction extends ActionSupport {
 					addActionError("ユーザーIDとパスワードが一致しません。");
 					return INPUT;
 				}
-				
+				//for search page
+				boolean errchq =true;
+				userSession.put("Errorchq", errchq);
 				return SUCCESS; // all well
 			}
 

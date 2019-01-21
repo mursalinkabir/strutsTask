@@ -74,7 +74,7 @@
 	<!-- Checking if error exists -->
 	<%  
 	boolean errchq= true;
-	errchq = (boolean) session.getAttribute("Errorchq");
+	 errchq = (boolean) session.getAttribute("Errorchq");
 	if(!errchq){
 	%>
 		<!-- Showing search results -->

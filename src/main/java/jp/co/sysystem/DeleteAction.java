@@ -60,35 +60,7 @@ public class DeleteAction extends ActionSupport implements SessionAware {
 		}
 	}
 
-	public boolean isAlphaNumeric(String s) {
-		String pattern = "^[a-zA-Z0-9]*$";
-		return s.matches(pattern);
-	}
 
-	public boolean isFullWidth(String s) {
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			int esw = UCharacter.getIntPropertyValue(c, UProperty.EAST_ASIAN_WIDTH);
-			if (esw!=3) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	public boolean isHalfWidth(String s) {
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			int esw = UCharacter.getIntPropertyValue(c, UProperty.EAST_ASIAN_WIDTH);
-			if (esw!=2) {
-				return false;
-			}
-		}
-		return true;
-
-		
-	}
 
 	public String execute() throws Exception {
 		db.connect();
@@ -99,77 +71,7 @@ public class DeleteAction extends ActionSupport implements SessionAware {
 		return INPUT; // all well
 	}
 
-	public String UpdateUser() throws Exception {
-	
-		if (userBean.getId() == null || userBean.getKana() == null || userBean.getUname() == null) {
-			
-			return INPUT;// First time page loads. We show page associated to INPUT result.
 
-		} else {
-
-			// adding field error
-			if (userBean.getId().isEmpty()) {
-				addFieldError("userBean.id", "ID is needed");
-			}
-			if (userBean.getPword().isEmpty()) {
-				addFieldError("userBean.pword", MessagesConfig.MSE005);
-			}
-
-			if (userBean.getUname().isEmpty()) {
-				addFieldError("userBean.uname", MessagesConfig.MSE009);
-			}
-			if (userBean.getKana().isEmpty()) {
-				addFieldError("userBean.kana", MessagesConfig.MSE012);
-			}
-			if (userBean.getBirth().isEmpty()) {
-				addFieldError("userBean.birth", MessagesConfig.MSE016);
-			}
-			if (userBean.getClub().isEmpty()) {
-				addFieldError("userBean.club", MessagesConfig.MSE015);
-			}
-			
-			boolean isIdAlpha = isAlphaNumeric(userBean.getId());
-			boolean isPwAlpha = isAlphaNumeric(userBean.getPword());
-			boolean isNameFull = isHalfWidth(userBean.getUname());
-			boolean isKanaHalf = isHalfWidth(userBean.getKana());
-//			boolean isBirthokay = true;
-			
-//			try {
-//				SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy/MM/dd");
-//				java.util.Date date  = formatter1.parse(userBean.getBirth());
-//				java.sql.Date sqlStartDate = new java.sql.Date(date.getTime());  
-//				
-//
-//			} catch (Exception e) {
-//
-//				isBirthokay = false;
-//			}
-
-			if (!isIdAlpha) {
-				addActionError(MessagesConfig.MSE002);
-				return INPUT;
-			} else if (!isPwAlpha) {
-				addActionError(MessagesConfig.MSE006);
-				return INPUT;
-			} else if (isNameFull) {
-				addActionError(MessagesConfig.MSE010);
-				return INPUT;
-			} else if (!isKanaHalf) {
-				addActionError(MessagesConfig.MSE013);
-				return INPUT;
-			} 
-			else if (isHalfWidth(userBean.getClub())) {
-				addActionError(MessagesConfig.MSE019);
-				return INPUT;
-			} else {
-				userSession.put("userData", userBean);
-			return SUCCESS; // all well
-			
-			}
-
-		}
-
-	}
 
 	public User getUserBean() {
 		return userBean;
