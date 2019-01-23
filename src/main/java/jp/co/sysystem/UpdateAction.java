@@ -175,40 +175,12 @@ public class UpdateAction extends ActionSupport implements SessionAware {
 				addActionError(MessagesConfig.MSE016);
 				errchq = true;
 			}
-			if (userBean.getClub().isEmpty()) {
+			/*if (userBean.getClub().isEmpty()) {
 				//addFieldError("userBean.club", MessagesConfig.MSE015);
 				addActionError(MessagesConfig.MSE015);
 				errchq = true;
-			}
+			}*/
 
-//			boolean isIdAlpha = isAlphaNumeric(userBean.getId());
-//			boolean isNameFull = isHalfWidth(userBean.getUname());
-//			boolean isKanaHalf = isHalfWidth(userBean.getKana());
-//			boolean isBirthformatok = isThisDateValid(userBean.getBirth(), "yyyy/MM/dd");
-
-//			if (!isIdAlpha) {
-//				addActionError(MessagesConfig.MSE002);
-//				return INPUT;
-//			} else if (isNameFull) {
-//				addActionError(MessagesConfig.MSE010);
-//				return INPUT;
-//			} else if (!isKanaHalf) {
-//				addActionError(MessagesConfig.MSE013);
-//				return INPUT;
-//			} else if (!isBirthformatok) {
-//				addActionError(MessagesConfig.MSE018);
-//				return INPUT;
-//			} else if (isFullWidth(userBean.getBirth())) {
-//				addActionError(MessagesConfig.MSE017);
-//				return INPUT;
-//			} else if (isHalfWidth(userBean.getClub())) {
-//				addActionError(MessagesConfig.MSE019);
-//				return INPUT;
-//			} else {
-//				userSession.put("userData", userBean);
-//				return SUCCESS; // all well
-//
-//			}
 
 			
 			if (userBean.getId().length() > 0) {
@@ -237,6 +209,11 @@ public class UpdateAction extends ActionSupport implements SessionAware {
 					addActionError(MessagesConfig.MSE010);
 					errchq = true;
 				}
+				boolean isNameAlpha = isAlphaNumeric(userBean.getUname());
+				if (!isNameAlpha) {
+					addActionError("名前には英数字を入力してください。");
+					errchq = true;
+				}
 			}
 			if (userBean.getKana().length() > 0) {
 				boolean isKanaHalf = isHalfWidth(userBean.getKana());
@@ -246,14 +223,15 @@ public class UpdateAction extends ActionSupport implements SessionAware {
 				}
 			}
 
-			if (userBean.getKana().length() > 0) {
+			/*if (userBean.getKana().length() > 0) {
 				if (isHalfWidth(userBean.getClub())) {
 					addActionError(MessagesConfig.MSE019);
 					errchq = true;
 				}
-			}
+			}*/
 			if (!errchq) {
 				userSession.put("userData", userBean);
+				
 				return SUCCESS; // all well
 			} else {
 				return INPUT;// error is there

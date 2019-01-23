@@ -103,8 +103,21 @@
 		</s:form>
 		
 
-		<button type="button" name="back" onclick="history.back()">戻る</button>
-	
+		<!-- <button type="button" name="back" onclick="history.back()">戻る</button> -->
+	<!-- New Back -->
+	<a
+					href="<s:url action="Search">
+					<s:param name="ID">
+					<s:property value = "userBean.id"/></s:param>
+					<s:param name="uname"></s:param>
+					<s:param name="kana"></s:param>
+
+					
+					</s:url>">
+					<button class="button -blue -bordered" style="margin-left: 5px;">
+						<span class="button--inner"> 戻る</span>
+					</button>
+				</a>
 
 	</div>
 

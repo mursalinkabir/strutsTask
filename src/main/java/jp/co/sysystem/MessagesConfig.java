@@ -47,5 +47,6 @@ public class MessagesConfig {
 	static final String MSE023 ="既に使用されているため、使用できません。";
 	static final String MSE024 ="データの登録に失敗しました。";
 	static final String MSE025 ="パスワードとパスワード再入力は同じものを入力してください。";
+	static final String LoginErr ="適切な資格情報でログインしてください。/Please login Using correct credentials";
 
 }

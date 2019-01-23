@@ -36,6 +36,7 @@ public class DBAccess {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException ex) {
 			System.err.println("Unable to load MySQL Driver");
+			
 		}
 
 		String jdbcUrl = "jdbc:mysql://localhost:3306/userinfo?useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false";

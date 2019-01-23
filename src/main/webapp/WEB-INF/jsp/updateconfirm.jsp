@@ -18,7 +18,7 @@
 			<s:actionerror />
 		</div>
 	</s:if>
-	<h1>新規登録確認画面</h1>
+	<h1>更新確認画面</h1>
 	<!-- 	<p> -->
 	<!-- 		Your registration information: -->
 	<%-- 		<s:property value="userBean" /> --%>

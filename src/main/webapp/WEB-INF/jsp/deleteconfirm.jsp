@@ -18,7 +18,7 @@
 			<s:actionerror />
 		</div>
 	</s:if>
-	<h1>新規登録確認画面</h1>
+	<h1>削除</h1>
 
 	<div id="conDiv">
 		<table id="conTable">

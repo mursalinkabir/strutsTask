@@ -74,7 +74,16 @@
 	<!-- Checking if error exists -->
 	<%  
 	boolean errchq= true;
-	 errchq = (boolean) session.getAttribute("Errorchq");
+	if(session!= null){
+		if (session.getAttribute("Errorchq") == null || session.getAttribute("Errorchq").equals("")) {
+			 errchq= true;
+		}else{
+			 errchq = (boolean) session.getAttribute("Errorchq");
+		}	
+	}
+
+	
+	 
 	if(!errchq){
 	%>
 		<!-- Showing search results -->
@@ -85,6 +94,7 @@
 
 				<% 
 					// retrieve your list from the request, with casting 
+				
 					String flag = (String) session.getAttribute("arrayRow");
 					if (flag != null) {
 						// Form was submitted.
@@ -134,10 +144,10 @@
 						}
 
 					}
-					String msg = (String) session.getAttribute("msg");
-					if (msg != null) {
-						out.println("<tr><h2>" + msg + "</h2></tr>");
-					}
+// 					String msg = (String) session.getAttribute("msg");
+// 					if (msg != null) {
+// 						out.println("<tr><h2>" + msg + "</h2></tr>");
+// 					}
 				%>
 			
 		</table>

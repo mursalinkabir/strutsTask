@@ -21,15 +21,15 @@ public class CheckId extends ActionSupport {
 
 	@Override
 	public String execute() throws Exception {
-		System.out.println("ID in Checkid class is " + id);
+		//System.out.println("ID in Checkid class is " + id);
 		boolean exists = false;
 		try {
 			db.connect();
 			exists = db.isExist(id);
 			if (exists) {
-				setMsg("ID Number =" + id + " Exists in the Database.");
+				setMsg(MessagesConfig.MSI005);
 			} else {
-				setMsg("ID Number =" + id + " is free to use.");
+				setMsg(MessagesConfig.MSI004);
 			}
 
 			System.out.println(msg);

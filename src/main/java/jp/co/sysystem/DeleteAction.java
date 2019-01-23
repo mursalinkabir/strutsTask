@@ -82,6 +82,17 @@ public class DeleteAction extends ActionSupport implements SessionAware {
 	}
 
 	public String UserDBUpdate() {
+		//user access control
+		if (userSession != null) {
+			String IDval = (String) userSession.get("ID");
+			if (IDval == null || IDval.equals("")) {
+				addActionError(MessagesConfig.LoginErr);
+				return "login";
+			}
+		}else {
+			addActionError(MessagesConfig.LoginErr);
+			return "login";
+		}
 		if(userBean!=null) {
 			userBean = (User) userSession.get("userData");
 			db.connect();

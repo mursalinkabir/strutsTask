@@ -115,6 +115,21 @@ public class RegisterAction extends ActionSupport implements SessionAware {
 	}
 
 	public String RegisterUser() throws Exception {
+		
+		//user access control
+		if (userSession != null) {
+			String IDval = (String) userSession.get("ID");
+			if (IDval == null || IDval.equals("")) {
+				addActionError(MessagesConfig.LoginErr);
+				return "login";
+			}
+		}else {
+			addActionError(MessagesConfig.LoginErr);
+			return "login";
+		}
+		
+		
+		
 		boolean errchq = false;
 
 		if (userBean.getId() == null || userBean.getKana() == null || userBean.getUname() == null) {
@@ -154,11 +169,11 @@ public class RegisterAction extends ActionSupport implements SessionAware {
 				addActionError(MessagesConfig.MSE016);
 				errchq = true;
 			}
-			if (userBean.getClub().isEmpty()) {
+			/*if (userBean.getClub().isEmpty()) {
 				// addFieldError("userBean.club", MessagesConfig.MSE015);
 				addActionError(MessagesConfig.MSE015);
 				errchq = true;
-			}
+			}*/
 			db.connect();
 
 			if (userBean.getId().length() > 0) {

@@ -8,7 +8,7 @@
 
 <title>Register</title>
 <script>
-	function sendMyValue() {
+/* 	function sendMyValue() {
 		
 		 //var data1 = JSON.stringify("id="+id);
 		$.ajax({
@@ -26,23 +26,28 @@
 				alert("Some error occured.");
 			}
 		});
-	}
+	} */
 	
 	function ajaxStruts() {
 		var id = $("#Register_userBean_id").val();
-		 console.log("form id ="+id);
-	    $.ajax({
-	          type: "GET",
-	          contentType: "application/x-www-form-urlencoded",
-	          url: "checkid.action",
-	          dataType: "json",
-	          data: "id="+id,
-	          success: function(data){
-// 	            alert(data.msg);
-	        	  var html = "<br>" + data.msg;
-					$("#info").html(html);
-	          }
-	    });
+		if(id.length >0){
+			 console.log("form id ="+id);
+			    $.ajax({
+			          type: "GET",
+			          contentType: "application/x-www-form-urlencoded",
+			          url: "checkid.action",
+			          dataType: "json",
+			          data: "id="+id,
+			          success: function(data){
+//		 	            alert(data.msg);
+			        	  var html = "<br>" + data.msg;
+							$("#info").html(html);
+			          }
+			    });
+		}else{
+			$("#info").html("ユーザーIDを入力してください。");
+		}
+	
 	}
 </script>
 </head>
@@ -80,7 +85,7 @@
 				</tr>
 				<tr>
 					<td><div id="info" style="color: green; font-size: 18px;"></div></td>
-					<td><input type="button" value="Check" onclick="ajaxStruts()"
+					<td><input type="button" value="使用できるか確認" onclick="ajaxStruts()"
 						style="background-color: #008CBA;"></td>
 				</tr>
 				<tr>
@@ -110,8 +115,18 @@
 			</span>
 
 		</s:form>
-	
-		<button type="button" name="back" onclick="history.back()">戻る</button>
+		<a
+					href="<s:url action="Search">
+					<s:param name="ID">
+					<s:property value = "userBean.id"/></s:param>
+					<s:param name="uname"></s:param>
+					<s:param name="kana"></s:param>
+					</s:url>">
+					<button class="button -blue -bordered" style="margin-left: 5px;">
+						<span class="button--inner"> 戻る</span>
+					</button>
+				</a>
+		<!-- <button type="button" name="back" onclick="history.back()">戻る</button> -->
 	
 	</div>
 
